@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { getAchievements, createAchievement, updateAchievement, deleteAchievement } from "@/actions/landing";
-import { Plus, Edit2, Trash2, Save, X } from "lucide-react";
+import { Plus, Edit2, Trash2, Save, X, Download } from "lucide-react";
+import * as XLSX from "xlsx";
 
 import { InsetGroup, InsetRow, AppleInput, AppleModal } from "@/components/admin/AppleStyle";
 
@@ -90,6 +91,19 @@ export default function PrestasiAdminPage() {
     }
   };
 
+  const handleExport = () => {
+    const exportData = data.map((item, index) => ({
+      No: index + 1,
+      Label: item.label,
+      Tingkat: item.scope,
+      Tahun: item.year,
+    }));
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Prestasi");
+    XLSX.writeFile(workbook, "Data_Prestasi.xlsx");
+  };
+
   return (
     <div className="w-full max-w-5xl mx-auto mac-admin">
       <div className="flex items-center justify-between mb-6">
@@ -97,12 +111,21 @@ export default function PrestasiAdminPage() {
           <h1 className="mac-title-2 text-gray-900">Prestasi &amp; Penghargaan</h1>
           <p className="mac-callout text-[#8e8e93] mt-0.5">Kelola daftar prestasi yang tampil di Landing Page.</p>
         </div>
-        <button
-          onClick={() => handleOpenModal()}
-          className="mac-btn mac-btn-primary flex items-center gap-1.5"
-        >
-          <Plus size={15} /> Tambah Prestasi
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleExport}
+            className="mac-btn mac-btn-ghost flex items-center gap-1.5"
+            disabled={data.length === 0}
+          >
+            <Download size={15} /> Export Excel
+          </button>
+          <button
+            onClick={() => handleOpenModal()}
+            className="mac-btn mac-btn-primary flex items-center gap-1.5"
+          >
+            <Plus size={15} /> Tambah Prestasi
+          </button>
+        </div>
       </div>
 
       <InsetGroup>

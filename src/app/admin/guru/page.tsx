@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { getTeachers, addTeacher, updateTeacher, deleteTeacher } from "@/actions/teacher";
-import { Plus, Edit2, Trash2 } from "lucide-react";
+import { Plus, Edit2, Trash2, Download } from "lucide-react";
 import Image from "next/image";
+import * as XLSX from "xlsx";
 import { InsetGroup, InsetRow, AppleInput, AppleModal, MediaUploaderRow } from "@/components/admin/AppleStyle";
 
 type Teacher = {
@@ -83,6 +84,19 @@ export default function GuruAdminPage() {
     }
   };
 
+  const handleExport = () => {
+    const exportData = data.map((item, index) => ({
+      No: index + 1,
+      Nama: item.name,
+      Jabatan: item.position,
+      "Mata Pelajaran": item.subjects || "-",
+    }));
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Guru");
+    XLSX.writeFile(workbook, "Data_Guru.xlsx");
+  };
+
   return (
     <div className="w-full max-w-5xl mx-auto mac-admin">
       <div className="flex items-center justify-between mb-6">
@@ -90,12 +104,21 @@ export default function GuruAdminPage() {
           <h1 className="mac-title-2 text-gray-900">Direktori Guru &amp; Staf</h1>
           <p className="mac-callout text-[#8e8e93] mt-0.5">Kelola data tenaga pendidik dan staf sekolah.</p>
         </div>
-        <button
-          onClick={() => handleOpenModal()}
-          className="mac-btn mac-btn-primary flex items-center gap-1.5"
-        >
-          <Plus size={15} /> Tambah Guru
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleExport}
+            className="mac-btn mac-btn-ghost flex items-center gap-1.5"
+            disabled={data.length === 0}
+          >
+            <Download size={15} /> Export Excel
+          </button>
+          <button
+            onClick={() => handleOpenModal()}
+            className="mac-btn mac-btn-primary flex items-center gap-1.5"
+          >
+            <Plus size={15} /> Tambah Guru
+          </button>
+        </div>
       </div>
 
       <InsetGroup>

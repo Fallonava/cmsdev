@@ -2,17 +2,37 @@ import { prisma } from "@/lib/prisma";
 import { Users, CheckCircle2, XCircle, Clock, Trash2, Smartphone } from "lucide-react";
 import { updateApplicantStatus, deleteApplicant } from "@/actions/ppdb";
 import { InsetGroup, InsetRow, MacBadge } from "@/components/admin/AppleStyle";
+import ExportButton from "@/components/admin/ExportButton";
 
 export default async function AdminPPDBPage() {
   const applicants = await prisma.applicant.findMany({
     orderBy: { createdAt: "desc" }
   });
 
+  const exportData = applicants.map((app, index) => ({
+    No: index + 1,
+    "Nomor Pendaftaran": app.id,
+    "Nama Lengkap": app.fullName,
+    "NISN": app.nisn,
+    "Asal Sekolah": app.prevSchool,
+    "Nomor HP Orang Tua": app.parentPhone,
+    "Status": app.status,
+    "Tanggal Daftar": app.createdAt.toLocaleDateString("id-ID"),
+  }));
+
   return (
     <div className="w-full max-w-5xl mx-auto mac-admin">
-      <div className="flex flex-col gap-1 mb-6">
-        <h1 className="mac-title-2 text-gray-900">Data Pendaftar PPDB</h1>
-        <p className="mac-callout text-[#8e8e93]">Manajemen data peserta didik baru yang masuk melalui sistem online.</p>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col gap-1">
+          <h1 className="mac-title-2 text-gray-900">Data Pendaftar PPDB</h1>
+          <p className="mac-callout text-[#8e8e93]">Manajemen data peserta didik baru yang masuk melalui sistem online.</p>
+        </div>
+        <ExportButton 
+          data={exportData} 
+          filename="Data_Pendaftar_PPDB" 
+          sheetName="Pendaftar" 
+          disabled={applicants.length === 0} 
+        />
       </div>
 
       <InsetGroup>
