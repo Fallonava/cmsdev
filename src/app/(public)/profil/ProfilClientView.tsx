@@ -24,7 +24,9 @@ type Extracurricular = {
   order: number;
 };
 
-export default function ProfilClientView({ teachers, ekskuls }: { teachers: Teacher[], ekskuls: Extracurricular[] }) {
+import { ProfilSettings } from "@/actions/profilSettings";
+
+export default function ProfilClientView({ teachers, ekskuls, settings }: { teachers: Teacher[], ekskuls: Extracurricular[], settings: ProfilSettings }) {
   const { scrollYProgress } = useScroll();
   const y1 = useTransform(scrollYProgress, [0, 1], [0, 200]);
   
@@ -43,12 +45,11 @@ export default function ProfilClientView({ teachers, ekskuls }: { teachers: Teac
             <span className="w-2 h-2 rounded-full bg-secondary"></span>
             Profil Institusi
           </div>
-          <h1 className="text-5xl sm:text-6xl md:text-[5rem] lg:text-[6rem] font-extrabold text-gray-900 leading-[1.05] tracking-tighter">
-            Berakar pada Akhlak, <br className="hidden md:block"/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-green-600 to-secondary">Tumbuh Melampaui Batas.</span>
+          <h1 className="text-5xl sm:text-6xl md:text-[5rem] lg:text-[6rem] font-extrabold text-gray-900 leading-[1.05] tracking-tighter whitespace-pre-line">
+            {settings.profil_hero_title}
           </h1>
           <p className="text-xl md:text-2xl text-gray-500 font-medium max-w-3xl mt-4 leading-relaxed">
-            Mengenal lebih dalam ruh pendidikan di MTs Muhammadiyah 07 Purbalingga—tempat bertemunya nilai luhur Islam dan inovasi masa depan.
+            {settings.profil_hero_desc}
           </p>
         </motion.div>
 
@@ -86,11 +87,11 @@ export default function ProfilClientView({ teachers, ekskuls }: { teachers: Teac
                 <Target size={32} />
               </div>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-6 tracking-tight">Visi Kami</h2>
-              <p className="text-2xl sm:text-3xl text-gray-800 font-bold leading-tight">
-                "Mewujudkan Generasi Islami, Berakhlak Mulia, dan Berprestasi Global."
+              <p className="text-2xl sm:text-3xl text-gray-800 font-bold leading-tight whitespace-pre-line">
+                {settings.profil_visi}
               </p>
-              <p className="text-gray-500 text-lg mt-6 font-medium leading-relaxed">
-                Visi ini menjadi kompas bagi seluruh aktivitas pendidikan. Kami mendidik tidak hanya untuk kecerdasan akademik, namun juga kematangan spiritual.
+              <p className="text-gray-500 text-lg mt-6 font-medium leading-relaxed whitespace-pre-line">
+                {settings.profil_visi_desc}
               </p>
             </motion.div>
 
@@ -107,19 +108,22 @@ export default function ProfilClientView({ teachers, ekskuls }: { teachers: Teac
               </div>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-8 tracking-tight">Misi Utama</h2>
               <ul className="space-y-6 relative z-10">
-                {[
-                  "Mengintegrasikan IPTEK dan IMTAQ secara holistik.",
-                  "Membentuk karakter berakhlakul karimah dan disiplin tinggi.",
-                  "Mengoptimalkan potensi bakat akademik & non-akademik.",
-                  "Menciptakan ekosistem belajar inovatif berbasis digital."
-                ].map((misi, i) => (
+                {(() => {
+                  let misiList: string[] = [];
+                  try {
+                    misiList = JSON.parse(settings.profil_misi);
+                  } catch (e) {
+                    misiList = [];
+                  }
+                  return misiList.map((misi, i) => (
                   <li key={i} className="flex gap-4 items-start">
                     <span className="shrink-0 w-8 h-8 rounded-full bg-white/10 text-white font-bold flex items-center justify-center text-sm mt-1 backdrop-blur-sm">
                       {i + 1}
                     </span>
                     <span className="text-lg text-gray-300 font-medium leading-relaxed">{misi}</span>
                   </li>
-                ))}
+                ))
+                })()}
               </ul>
             </motion.div>
 

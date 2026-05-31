@@ -84,25 +84,36 @@ export default function GuruAdminPage() {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
+    <div className="w-full max-w-5xl mx-auto mac-admin">
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Direktori Guru & Staf</h1>
-          <p className="text-[14px] text-gray-500 font-medium mt-1">Kelola data tenaga pendidik dan staf sekolah.</p>
+          <h1 className="mac-title-2 text-gray-900">Direktori Guru &amp; Staf</h1>
+          <p className="mac-callout text-[#8e8e93] mt-0.5">Kelola data tenaga pendidik dan staf sekolah.</p>
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-1.5 px-4 py-2 bg-[#007aff] text-white text-[14px] font-medium rounded-xl hover:bg-[#0056b3] transition-colors shadow-sm active:scale-95"
+          className="mac-btn mac-btn-primary flex items-center gap-1.5"
         >
-          <Plus size={18} /> Tambah Guru
+          <Plus size={15} /> Tambah Guru
         </button>
       </div>
 
       <InsetGroup>
         {loading ? (
-          <div className="p-10 text-center text-gray-500 font-medium">Memuat data...</div>
+          <div className="flex items-center justify-center py-16 gap-3 text-[#8e8e93]">
+            <div className="w-5 h-5 border-2 border-[#c7c7cc] border-t-[#007AFF] rounded-full animate-spin" />
+            <span className="mac-callout">Memuat data…</span>
+          </div>
         ) : data.length === 0 ? (
-          <div className="p-10 text-center text-gray-500 font-medium text-[14px]">Belum ada data guru. Silakan tambah baru.</div>
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 rounded-[1.25rem] bg-[#f5f5f7] border border-[#e5e5ea] flex items-center justify-center mb-4 text-[#c7c7cc]">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <p className="mac-headline text-[#3c3c43] mb-1">Belum Ada Data Guru</p>
+            <p className="mac-callout text-[#8e8e93] max-w-[220px] leading-relaxed">
+              Tekan "Tambah Guru" untuk menambahkan data pertama.
+            </p>
+          </div>
         ) : (
           <div className="flex flex-col">
             {data.map((item, index) => (
@@ -122,12 +133,12 @@ export default function GuruAdminPage() {
                     <p className="text-[13px] text-gray-500 mt-0.5 line-clamp-1">{item.position}</p>
                     {item.subjects && <p className="text-[12px] text-gray-400 mt-0.5 line-clamp-1 italic">{item.subjects}</p>}
                   </div>
-                  <div className="flex items-center justify-end gap-2 shrink-0 mt-2 sm:mt-0">
-                    <button onClick={() => handleOpenModal(item)} className="p-2 text-[#007aff] hover:bg-blue-50 rounded-lg transition-colors active:scale-95">
-                      <Edit2 size={18} />
+                  <div className="flex items-center justify-end gap-1 shrink-0 mt-2 sm:mt-0">
+                    <button onClick={() => handleOpenModal(item)} className="mac-btn mac-btn-ghost mac-btn-sm flex items-center gap-1">
+                      <Edit2 size={13} /> Edit
                     </button>
-                    <button onClick={() => handleDelete(item.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors active:scale-95">
-                      <Trash2 size={18} />
+                    <button onClick={() => handleDelete(item.id)} className="mac-btn mac-btn-sm flex items-center gap-1 text-[#FF3B30] hover:bg-[#FF3B30]/10 active:bg-[#FF3B30]/20">
+                      <Trash2 size={13} /> Hapus
                     </button>
                   </div>
                 </div>
@@ -155,6 +166,7 @@ export default function GuruAdminPage() {
           </InsetRow>
           <MediaUploaderRow
             label="Foto Guru (Opsional)"
+            name="photoUrl"
             value={formData.photoUrl}
             onChange={(val) => setFormData({ ...formData, photoUrl: val })}
             isLast

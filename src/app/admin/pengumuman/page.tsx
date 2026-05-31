@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { getAnnouncements, addAnnouncement, updateAnnouncement, deleteAnnouncement } from "@/actions/announcement";
 import { Plus, Edit2, Trash2, Megaphone } from "lucide-react";
-import { InsetGroup, InsetRow, AppleInput, AppleModal } from "@/components/admin/AppleStyle";
+import { InsetGroup, InsetRow, AppleModal, MacBadge } from "@/components/admin/AppleStyle";
 
 type Announcement = {
   id: string;
@@ -79,25 +79,36 @@ export default function PengumumanAdminPage() {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
+    <div className="w-full max-w-5xl mx-auto mac-admin">
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Mading Digital / Pengumuman</h1>
-          <p className="text-[14px] text-gray-500 font-medium mt-1">Kelola pengumuman berjalan (Ticker) atau Popup di halaman depan.</p>
+          <h1 className="mac-title-2 text-gray-900">Mading Digital / Pengumuman</h1>
+          <p className="mac-callout text-[#8e8e93] mt-0.5">Kelola pengumuman berjalan (Ticker) atau Popup di halaman depan.</p>
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-1.5 px-4 py-2 bg-[#007aff] text-white text-[14px] font-medium rounded-xl hover:bg-[#0056b3] transition-colors shadow-sm active:scale-95"
+          className="mac-btn mac-btn-primary flex items-center gap-1.5"
         >
-          <Plus size={18} /> Tambah Pengumuman
+          <Plus size={15} /> Tambah Pengumuman
         </button>
       </div>
 
       <InsetGroup>
         {loading ? (
-          <div className="p-10 text-center text-gray-500 font-medium">Memuat data...</div>
+          <div className="flex items-center justify-center py-16 gap-3 text-[#8e8e93]">
+            <div className="w-5 h-5 border-2 border-[#c7c7cc] border-t-[#007AFF] rounded-full animate-spin" />
+            <span className="mac-callout">Memuat data…</span>
+          </div>
         ) : data.length === 0 ? (
-          <div className="p-10 text-center text-gray-500 font-medium text-[14px]">Belum ada data pengumuman. Silakan tambah baru.</div>
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 rounded-[1.25rem] bg-[#f5f5f7] border border-[#e5e5ea] flex items-center justify-center mb-4 text-[#c7c7cc]">
+              <Megaphone size={28} strokeWidth={1.5} />
+            </div>
+            <p className="mac-headline text-[#3c3c43] mb-1">Belum Ada Pengumuman</p>
+            <p className="mac-callout text-[#8e8e93] max-w-[220px] leading-relaxed">
+              Tekan "Tambah Pengumuman" untuk membuat pesan baru.
+            </p>
+          </div>
         ) : (
           <div className="flex flex-col">
             {data.map((item, index) => (
@@ -109,22 +120,24 @@ export default function PengumumanAdminPage() {
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-[15px] text-gray-900 line-clamp-2">{item.content}</p>
+                    <p className="font-semibold text-[15px] text-[#1c1c1e] line-clamp-2">{item.content}</p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${item.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-                        {item.isActive ? 'Aktif' : 'Tidak Aktif'}
-                      </span>
-                      <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${item.isPopup ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
-                        {item.isPopup ? 'Popup Modal' : 'Ticker / Teks Berjalan'}
-                      </span>
+                      <MacBadge 
+                        label={item.isActive ? "Aktif" : "Tidak Aktif"} 
+                        color={item.isActive ? "green" : "gray"} 
+                      />
+                      <MacBadge 
+                        label={item.isPopup ? "Popup Modal" : "Ticker"} 
+                        color={item.isPopup ? "purple" : "blue"} 
+                      />
                     </div>
                   </div>
-                  <div className="flex items-center justify-end gap-2 shrink-0 mt-2 sm:mt-0">
-                    <button onClick={() => handleOpenModal(item)} className="p-2 text-[#007aff] hover:bg-blue-50 rounded-lg transition-colors active:scale-95">
-                      <Edit2 size={18} />
+                  <div className="flex items-center justify-end gap-1 shrink-0 mt-2 sm:mt-0">
+                    <button onClick={() => handleOpenModal(item)} className="mac-btn mac-btn-ghost mac-btn-sm flex items-center gap-1">
+                      <Edit2 size={13} /> Edit
                     </button>
-                    <button onClick={() => handleDelete(item.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors active:scale-95">
-                      <Trash2 size={18} />
+                    <button onClick={() => handleDelete(item.id)} className="mac-btn mac-btn-sm flex items-center gap-1 text-[#FF3B30] hover:bg-[#FF3B30]/10 active:bg-[#FF3B30]/20">
+                      <Trash2 size={13} /> Hapus
                     </button>
                   </div>
                 </div>

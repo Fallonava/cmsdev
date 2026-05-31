@@ -51,7 +51,7 @@ const MENU_GROUPS = [
   {
     label: "Konfigurasi",
     items: [
-      { name: "Pengaturan Sistem", href: "/admin/pengaturan", icon: Settings, color: "bg-gray-500", roles: ["SUPERADMIN"] },
+      { name: "Pengaturan Sistem", href: "/admin/pengaturan", icon: Settings, color: "bg-gray-500", roles: ["SUPERADMIN", "ADMIN"] },
     ]
   }
 ];
@@ -102,47 +102,47 @@ export default function AdminLayout({
 
   return (
     <motion.div 
-      initial={{ scale: 0.97, opacity: 0 }}
+      initial={{ scale: 0.98, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      transition={{ type: "spring", stiffness: 420, damping: 32 }}
       className="flex h-screen bg-[#e8e8ed] overflow-hidden mac-admin"
     >
       
-      {/* 1. Seamless Sidebar (macOS Style) */}
-      <aside className="hidden md:flex flex-col w-[250px] h-full shrink-0 bg-transparent">
+      {/* 1. Sidebar — macOS Vibrancy */}
+      <aside className="hidden md:flex flex-col w-[240px] h-full shrink-0 mac-vibrancy border-r border-black/[0.06]">
         
         {/* Brand & Traffic Lights */}
-        <div className="h-24 flex flex-col justify-center px-5 pt-3">
+        <div className="h-[60px] flex items-center px-4 gap-3 shrink-0">
           {/* Traffic Lights */}
-          <div className="flex items-center gap-2 mb-4 ml-2 group">
-            <div className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e] shadow-sm flex items-center justify-center opacity-90 hover:opacity-100">
-              <X size={8} className="text-black/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="flex items-center gap-1.5 group">
+            <div className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e] flex items-center justify-center">
+              <X size={7} className="text-[#820005] opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
-            <div className="w-3 h-3 rounded-full bg-[#ffbd2e] border border-[#dea123] shadow-sm flex items-center justify-center opacity-90 hover:opacity-100"></div>
-            <div className="w-3 h-3 rounded-full bg-[#27c93f] border border-[#1aab29] shadow-sm flex items-center justify-center opacity-90 hover:opacity-100"></div>
+            <div className="w-3 h-3 rounded-full bg-[#ffbd2e] border border-[#dea123]"></div>
+            <div className="w-3 h-3 rounded-full bg-[#27c93f] border border-[#1aab29]"></div>
           </div>
           
-          <div className="flex items-center gap-3 ml-1.5">
-            <div className="w-9 h-9 bg-gradient-to-b from-gray-700 to-gray-900 rounded-[0.55rem] flex items-center justify-center text-white font-bold text-lg shadow-sm border border-gray-900/10">
+          <div className="flex items-center gap-2.5 ml-1">
+            <div className="w-8 h-8 bg-gradient-to-b from-[#3a3a3c] to-[#1c1c1e] rounded-[0.5rem] flex items-center justify-center text-white font-bold text-sm shadow-sm">
               M
             </div>
             <div>
-              <span className="font-bold text-[15px] text-gray-900 tracking-tight leading-none block">Admin</span>
-              <span className="font-medium text-[11px] text-gray-500 tracking-wider uppercase mt-0.5 block">Workspace</span>
+              <span className="mac-headline text-[#1c1c1e] leading-none block">Admin</span>
+              <span className="mac-caption tracking-wider uppercase mt-0.5 block">CMS Workspace</span>
             </div>
           </div>
         </div>
 
         {/* Menu Items */}
-        <div className="flex-1 py-2 flex flex-col gap-0.5 px-3 overflow-y-auto">
+        <div className="flex-1 py-2 flex flex-col gap-0 px-2 overflow-y-auto">
           {MENU_GROUPS.map((group, groupIdx) => {
             const filteredItems = group.items.filter(item => item.roles.includes(role || "SUPERADMIN"));
             if (filteredItems.length === 0) return null;
 
             return (
-              <div key={group.label} className={groupIdx !== 0 ? "mt-4" : ""}>
-                <p className="text-[11px] font-bold text-gray-400/80 uppercase tracking-widest pl-3 mb-1.5">{group.label}</p>
-                <div className="flex flex-col gap-[2px]">
+              <div key={group.label} className={groupIdx !== 0 ? "mt-5" : "mt-2"}>
+                <p className="mac-label-caps pl-2 mb-1.5">{group.label}</p>
+                <div className="flex flex-col gap-[1px]">
                   {filteredItems.map((item) => {
                     const isActive = pathname === item.href || (pathname.startsWith(item.href) && item.href !== "/admin");
                     return (
@@ -150,16 +150,20 @@ export default function AdminLayout({
                         key={item.href}
                         href={item.href}
                         className={cn(
-                          "flex items-center gap-2.5 px-3 py-1.5 rounded-[0.4rem] font-medium transition-all duration-200 outline-none",
+                          "flex items-center gap-2.5 px-2.5 py-[5px] rounded-[0.45rem] transition-all duration-100 outline-none select-none",
                           isActive
-                            ? "bg-black/5 text-gray-900"
-                            : "text-gray-600 hover:bg-black/5"
+                            ? "bg-[#007AFF] text-white shadow-[0_1px_3px_rgba(0,122,255,0.3)]"
+                            : "text-[#3c3c43] hover:bg-black/[0.05] active:bg-black/[0.08]"
                         )}
                       >
-                        <div className={cn("w-6 h-6 rounded-[0.35rem] flex items-center justify-center text-white shadow-[0_1px_2px_rgba(0,0,0,0.1)] shrink-0", item.color)}>
-                          <item.icon size={14} strokeWidth={2.5} />
+                        <div className={cn(
+                          "w-[22px] h-[22px] rounded-[0.3rem] flex items-center justify-center text-white shrink-0",
+                          isActive ? "opacity-100" : "shadow-[0_1px_2px_rgba(0,0,0,0.12)]",
+                          item.color
+                        )}>
+                          <item.icon size={13} strokeWidth={2.5} />
                         </div>
-                        <span className="text-[13px] tracking-tight">{item.name}</span>
+                        <span className="mac-callout font-semibold">{item.name}</span>
                       </Link>
                     );
                   })}
@@ -169,70 +173,70 @@ export default function AdminLayout({
           })}
         </div>
 
-        {/* User Profile & Logout */}
-        <div className="p-3 mb-3">
+        {/* Logout */}
+        <div className="p-2 pb-3">
           <form action={doLogout}>
             <button 
               type="submit"
-              className="flex items-center gap-2.5 px-3 py-1.5 rounded-[0.4rem] font-medium text-gray-500 hover:text-red-600 hover:bg-red-500/10 w-full transition-all active:scale-95 duration-200"
+              className="flex items-center gap-2.5 px-2.5 py-[5px] rounded-[0.45rem] text-[#8e8e93] hover:text-[#FF3B30] hover:bg-[#FF3B30]/10 w-full transition-all duration-100 active:bg-[#FF3B30]/20"
             >
-              <LogOut size={14} strokeWidth={2.5} className="text-gray-400" />
-              <span className="text-[13px]">Akhiri Sesi</span>
+              <div className="w-[22px] h-[22px] rounded-[0.3rem] bg-[#8e8e93]/15 flex items-center justify-center shrink-0">
+                <LogOut size={12} strokeWidth={2.5} />
+              </div>
+              <span className="mac-callout font-semibold">Akhiri Sesi</span>
             </button>
           </form>
         </div>
       </aside>
 
       {/* 2. Main Content Area (Elevated White Layer) */}
-      <div className="flex-1 flex flex-col min-w-0 bg-white md:rounded-[0.8rem] md:my-2 md:mr-2 md:border md:border-white/60 md:ring-1 md:ring-black/5 md:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25),0_0_15px_rgba(0,0,0,0.05)] overflow-hidden relative">
+      <div className="flex-1 flex flex-col min-w-0 bg-white md:rounded-[0.75rem] md:my-2 md:mr-2 md:border md:border-white/60 md:ring-1 md:ring-black/[0.06] md:shadow-[0_20px_60px_-10px_rgba(0,0,0,0.2)] overflow-hidden relative">
         
-        {/* Top Navbar / Titlebar */}
-        <header className="h-14 shrink-0 flex items-center justify-between px-6 border-b border-gray-100/60 bg-white/60 backdrop-blur-2xl backdrop-saturate-[180%] sticky top-0 z-20">
+        {/* Toolbar / Titlebar */}
+        <header className="h-[46px] shrink-0 flex items-center justify-between px-4 border-b border-[#e5e5ea]/60 bg-white/70 backdrop-blur-2xl backdrop-saturate-[180%] sticky top-0 z-20">
           
           <div className="flex items-center gap-3">
-            <button onClick={() => setIsMobileOpen(true)} className="md:hidden flex items-center justify-center w-8 h-8 text-gray-600 hover:bg-gray-100 rounded-md transition-colors active:scale-95">
-              <Menu size={18} />
+            <button onClick={() => setIsMobileOpen(true)} className="md:hidden flex items-center justify-center w-7 h-7 text-[#636366] hover:bg-[#f5f5f7] rounded-md transition-colors">
+              <Menu size={16} />
             </button>
             <div className="hidden md:flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-gray-200" />
-              <span className="text-[14px] font-bold text-gray-800 tracking-tight">
+              <div className="w-2 h-2 rounded-full bg-[#d1d1d6]" />
+              <span className="mac-callout font-semibold text-[#3c3c43]">
                 {MENU_GROUPS.flatMap(g => g.items).find(i => pathname === i.href || (pathname.startsWith(i.href) && i.href !== "/admin"))?.name || 'Dashboard'}
               </span>
             </div>
           </div>
 
-          {/* Spotlight Search (Visual) */}
-          <div className="hidden md:flex flex-1 max-w-sm mx-6">
-            <button onClick={() => setIsCmdKOpen(true)} className="flex items-center w-full h-[30px] bg-gray-500/5 hover:bg-gray-500/10 border border-gray-900/5 rounded-[0.45rem] px-3 transition-colors text-gray-400 group cursor-text outline-none">
-              <Search size={14} strokeWidth={2.5} className="mr-2 opacity-60 group-hover:text-gray-900 transition-colors" />
-              <span className="text-[13px] font-medium tracking-tight flex-1 text-left group-hover:text-gray-900 transition-colors">Search...</span>
-              <div className="flex items-center gap-0.5 opacity-60">
-                <kbd className="font-sans text-[10px] font-bold bg-white/50 border border-gray-200/60 rounded-[0.25rem] px-1.5 py-[1px] shadow-sm">⌘</kbd>
-                <kbd className="font-sans text-[10px] font-bold bg-white/50 border border-gray-200/60 rounded-[0.25rem] px-1.5 py-[1px] shadow-sm">K</kbd>
+          {/* Spotlight Search */}
+          <div className="hidden md:flex flex-1 max-w-xs mx-4">
+            <button onClick={() => setIsCmdKOpen(true)} className="flex items-center w-full h-[26px] bg-black/[0.04] hover:bg-black/[0.07] border border-black/[0.06] rounded-md px-2.5 transition-colors text-[#aeaeb2] group cursor-text outline-none">
+              <Search size={12} strokeWidth={2.5} className="mr-1.5 opacity-60" />
+              <span className="mac-callout flex-1 text-left text-[#aeaeb2]">Cari fitur…</span>
+              <div className="flex items-center gap-0.5 opacity-50">
+                <kbd className="font-sans text-[9px] font-bold bg-white/70 border border-[#c7c7cc] rounded-[0.2rem] px-1 py-[1px]">⌘</kbd>
+                <kbd className="font-sans text-[9px] font-bold bg-white/70 border border-[#c7c7cc] rounded-[0.2rem] px-1 py-[1px]">K</kbd>
               </div>
             </button>
           </div>
           
-          {/* Right: User Profile Mini */}
-          <div className="flex items-center gap-2.5 cursor-pointer group px-2 py-1 hover:bg-gray-50 rounded-[0.4rem] transition-colors active:scale-95 shrink-0">
-            <div className="flex flex-col items-end justify-center">
-              <p className="font-semibold text-gray-900 text-[12px] leading-none">Superadmin</p>
-            </div>
-            <div className="w-7 h-7 rounded-full bg-gradient-to-b from-[#f5f5f7] to-[#e5e5ea] border border-gray-300 flex items-center justify-center font-bold text-gray-600 text-[10px] shadow-sm">
+          {/* Avatar */}
+          <div className="flex items-center gap-2 cursor-pointer group px-2 py-1 hover:bg-[#f5f5f7] rounded-md transition-colors shrink-0">
+            <span className="mac-caption font-semibold text-[#636366] hidden sm:block">Superadmin</span>
+            <div className="w-6 h-6 rounded-full bg-gradient-to-b from-[#f5f5f7] to-[#e5e5ea] border border-[#c7c7cc] flex items-center justify-center font-bold text-[#636366] text-[9px] shadow-sm">
               AD
             </div>
           </div>
         </header>
 
         {/* Main Scrolling Content */}
-        <main className="flex-1 overflow-y-auto p-6 bg-[#ffffff] relative">
+        <main className="flex-1 overflow-y-auto p-5 bg-white relative">
           <AnimatePresence mode="wait">
             <motion.div
               key={pathname}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
+              initial={{ opacity: 0, y: 10, scale: 0.995 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -6, scale: 0.998 }}
+              transition={{ type: "spring", stiffness: 340, damping: 30 }}
             >
               {children}
             </motion.div>
@@ -287,28 +291,29 @@ export default function AdminLayout({
       {/* 4. Spotlight Command Palette (Cmd+K) */}
       <AnimatePresence>
         {isCmdKOpen && (
-          <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh]">
+          <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[12vh]">
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsCmdKOpen(false)}
-              className="absolute inset-0 bg-black/20 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/25 backdrop-blur-[6px]"
             />
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: -20 }}
+              initial={{ opacity: 0, scale: 0.96, y: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -20 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              className="relative w-full max-w-lg bg-white/70 backdrop-blur-3xl backdrop-saturate-[200%] border border-white/50 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] rounded-2xl overflow-hidden flex flex-col"
+              exit={{ opacity: 0, scale: 0.96, y: -10 }}
+              transition={{ type: "spring", stiffness: 420, damping: 30 }}
+              className="relative w-full max-w-[520px] bg-white/75 backdrop-blur-3xl backdrop-saturate-[200%] border border-white/50 shadow-[0_32px_80px_-10px_rgba(0,0,0,0.28)] rounded-[1.25rem] overflow-hidden flex flex-col"
             >
-              <div className="flex items-center px-4 py-3 border-b border-gray-200/50">
-                <Search size={18} className="text-gray-400 mr-3 shrink-0" />
+              {/* Search input */}
+              <div className="flex items-center px-4 py-3 border-b border-[#e5e5ea]/50">
+                <Search size={16} className="text-[#aeaeb2] mr-3 shrink-0" />
                 <input 
                   autoFocus
                   type="text" 
-                  placeholder="Spotlight Search... (misal: galeri, berita)"
-                  className="flex-1 bg-transparent text-[16px] text-gray-900 placeholder:text-gray-400 outline-none font-medium"
+                  placeholder="Cari halaman, fitur, data…"
+                  className="flex-1 bg-transparent mac-body text-[#1c1c1e] placeholder:text-[#aeaeb2] outline-none"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => {
@@ -323,23 +328,47 @@ export default function AdminLayout({
                     }
                   }}
                 />
+                {searchQuery && (
+                  <button onClick={() => setSearchQuery("")} className="text-[#aeaeb2] hover:text-[#636366] transition-colors">
+                    <X size={14} />
+                  </button>
+                )}
               </div>
-              <div className="max-h-[300px] overflow-y-auto p-2">
-                {MENU_GROUPS.flatMap(g => g.items)
-                  .filter(i => i.name.toLowerCase().includes(searchQuery.toLowerCase()))
-                  .map((item) => (
-                    <button
-                      key={item.href}
-                      onClick={() => { router.push(item.href); setIsCmdKOpen(false); setSearchQuery(""); }}
-                      className="w-full flex items-center gap-3 px-3 py-2 hover:bg-[#007aff] hover:text-white text-gray-700 rounded-xl transition-colors text-left group"
-                    >
-                      <div className={cn("w-6 h-6 rounded-[0.35rem] flex items-center justify-center text-white shadow-sm shrink-0", item.color)}>
-                        <item.icon size={14} strokeWidth={2.5} />
-                      </div>
-                      <span className="text-[14px] font-medium tracking-tight group-hover:text-white">{item.name}</span>
-                    </button>
-                  ))
-                }
+
+              {/* Results */}
+              <div className="max-h-[340px] overflow-y-auto p-2">
+                {MENU_GROUPS.map((group) => {
+                  const matches = group.items.filter(i => i.name.toLowerCase().includes(searchQuery.toLowerCase()));
+                  if (matches.length === 0) return null;
+                  return (
+                    <div key={group.label} className="mb-2">
+                      <p className="mac-label-caps px-2 py-1">{group.label}</p>
+                      {matches.map((item) => (
+                        <button
+                          key={item.href}
+                          onClick={() => { router.push(item.href); setIsCmdKOpen(false); setSearchQuery(""); }}
+                          className="w-full flex items-center gap-3 px-3 py-2 hover:bg-[#007AFF] hover:text-white text-[#3c3c43] rounded-[0.5rem] transition-colors text-left group"
+                        >
+                          <div className={cn("w-6 h-6 rounded-[0.35rem] flex items-center justify-center text-white shadow-sm shrink-0", item.color)}>
+                            <item.icon size={13} strokeWidth={2.5} />
+                          </div>
+                          <span className="mac-callout font-semibold group-hover:text-white">{item.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  );
+                })}
+                {MENU_GROUPS.flatMap(g => g.items).filter(i => i.name.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
+                  <div className="text-center py-8">
+                    <p className="mac-callout text-[#8e8e93]">Tidak ada hasil untuk "{searchQuery}"</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer hint */}
+              <div className="flex items-center gap-4 px-4 py-2.5 border-t border-[#e5e5ea]/50 bg-[#f5f5f7]/50">
+                <span className="mac-caption">↵ Buka</span>
+                <span className="mac-caption">Esc Tutup</span>
               </div>
             </motion.div>
           </div>

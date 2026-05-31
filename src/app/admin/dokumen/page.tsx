@@ -79,25 +79,36 @@ export default function DokumenAdminPage() {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
+    <div className="w-full max-w-5xl mx-auto mac-admin">
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Pusat Unduhan</h1>
-          <p className="text-[14px] text-gray-500 font-medium mt-1">Kelola file atau dokumen yang bisa diunduh oleh publik.</p>
+          <h1 className="mac-title-2 text-gray-900">Pusat Unduhan</h1>
+          <p className="mac-callout text-[#8e8e93] mt-0.5">Kelola file atau dokumen yang bisa diunduh oleh publik.</p>
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-1.5 px-4 py-2 bg-[#007aff] text-white text-[14px] font-medium rounded-xl hover:bg-[#0056b3] transition-colors shadow-sm active:scale-95"
+          className="mac-btn mac-btn-primary flex items-center gap-1.5"
         >
-          <Plus size={18} /> Tambah Dokumen
+          <Plus size={15} /> Tambah Dokumen
         </button>
       </div>
 
       <InsetGroup>
         {loading ? (
-          <div className="p-10 text-center text-gray-500 font-medium">Memuat data...</div>
+          <div className="flex items-center justify-center py-16 gap-3 text-[#8e8e93]">
+            <div className="w-5 h-5 border-2 border-[#c7c7cc] border-t-[#007AFF] rounded-full animate-spin" />
+            <span className="mac-callout">Memuat data…</span>
+          </div>
         ) : data.length === 0 ? (
-          <div className="p-10 text-center text-gray-500 font-medium text-[14px]">Belum ada dokumen. Silakan tambah baru.</div>
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 rounded-[1.25rem] bg-[#f5f5f7] border border-[#e5e5ea] flex items-center justify-center mb-4 text-[#c7c7cc]">
+              <FileText size={28} strokeWidth={1.5} />
+            </div>
+            <p className="mac-headline text-[#3c3c43] mb-1">Belum Ada Dokumen</p>
+            <p className="mac-callout text-[#8e8e93] max-w-[220px] leading-relaxed">
+              Tekan "Tambah Dokumen" untuk mengunggah file pertama.
+            </p>
+          </div>
         ) : (
           <div className="flex flex-col">
             {data.map((item, index) => (
@@ -119,12 +130,12 @@ export default function DokumenAdminPage() {
                       </a>
                     </div>
                   </div>
-                  <div className="flex items-center justify-end gap-2 shrink-0 mt-2 sm:mt-0">
-                    <button onClick={() => handleOpenModal(item)} className="p-2 text-[#007aff] hover:bg-blue-50 rounded-lg transition-colors active:scale-95">
-                      <Edit2 size={18} />
+                  <div className="flex items-center justify-end gap-1 shrink-0 mt-2 sm:mt-0">
+                    <button onClick={() => handleOpenModal(item)} className="mac-btn mac-btn-ghost mac-btn-sm flex items-center gap-1">
+                      <Edit2 size={13} /> Edit
                     </button>
-                    <button onClick={() => handleDelete(item.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors active:scale-95">
-                      <Trash2 size={18} />
+                    <button onClick={() => handleDelete(item.id)} className="mac-btn mac-btn-sm flex items-center gap-1 text-[#FF3B30] hover:bg-[#FF3B30]/10 active:bg-[#FF3B30]/20">
+                      <Trash2 size={13} /> Hapus
                     </button>
                   </div>
                 </div>
@@ -157,6 +168,7 @@ export default function DokumenAdminPage() {
           </InsetRow>
           <MediaUploaderRow
             label="File Dokumen (PDF/DOC/Image)"
+            name="fileUrl"
             value={formData.fileUrl}
             onChange={(val) => setFormData({ ...formData, fileUrl: val })}
             isLast

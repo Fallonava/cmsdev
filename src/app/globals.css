@@ -1,6 +1,230 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@theme {
+  --color-primary:       #026E40;
+  --color-primary-light: #038c52;
+  --color-primary-dark:  #014d2d;
+  --color-secondary:     #F5B927;
+  --color-secondary-light: #f7ca54;
+  --color-secondary-dark:  #d49c15;
+}
+
+/* ══════════════════════════════════════════════════════════
+   macOS System Colors (Apple HIG — Light Mode)
+══════════════════════════════════════════════════════════ */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* System Accent Colors */
+  --mac-blue:   #007AFF;
+  --mac-green:  #34C759;
+  --mac-red:    #FF3B30;
+  --mac-orange: #FF9500;
+  --mac-yellow: #FFCC00;
+  --mac-purple: #AF52DE;
+  --mac-pink:   #FF2D55;
+  --mac-teal:   #5AC8FA;
+  --mac-indigo: #5856D6;
+  --mac-brown:  #A2845E;
+
+  /* System Grays */
+  --mac-gray-1: #8E8E93;
+  --mac-gray-2: #AEAEB2;
+  --mac-gray-3: #C7C7CC;
+  --mac-gray-4: #D1D1D6;
+  --mac-gray-5: #E5E5EA;
+  --mac-gray-6: #F2F2F7;
+
+  /* Surface Layers */
+  --mac-bg:          #E8E8ED;
+  --mac-sidebar-bg:  #F5F5F7;
+  --mac-content-bg:  #FFFFFF;
+  --mac-card-bg:     #FFFFFF;
+  --mac-separator:   rgba(0, 0, 0, 0.08);
+  --mac-separator-opaque: #E5E5EA;
+
+  /* Text */
+  --mac-label:       #000000;
+  --mac-label-2:     rgba(60, 60, 67, 0.60);
+  --mac-label-3:     rgba(60, 60, 67, 0.30);
+  --mac-label-4:     rgba(60, 60, 67, 0.18);
+}
+
+/* ══════════════════════════════════════════════════════════
+   macOS Dark Mode (follows OS preference)
+══════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1C1C1E;
+    --foreground: #F5F5F7;
+
+    /* Dark accent colors are slightly brighter */
+    --mac-blue:   #0A84FF;
+    --mac-green:  #30D158;
+    --mac-red:    #FF453A;
+    --mac-orange: #FF9F0A;
+    --mac-yellow: #FFD60A;
+    --mac-purple: #BF5AF2;
+    --mac-pink:   #FF375F;
+    --mac-teal:   #64D2FF;
+    --mac-indigo: #5E5CE6;
+
+    /* Dark grays */
+    --mac-gray-1: #8E8E93;
+    --mac-gray-2: #636366;
+    --mac-gray-3: #48484A;
+    --mac-gray-4: #3A3A3C;
+    --mac-gray-5: #2C2C2E;
+    --mac-gray-6: #1C1C1E;
+
+    /* Dark surfaces */
+    --mac-bg:          #000000;
+    --mac-sidebar-bg:  #1C1C1E;
+    --mac-content-bg:  #2C2C2E;
+    --mac-card-bg:     #3A3A3C;
+    --mac-separator:   rgba(255, 255, 255, 0.08);
+    --mac-separator-opaque: #3A3A3C;
+
+    /* Dark text */
+    --mac-label:   #FFFFFF;
+    --mac-label-2: rgba(235, 235, 245, 0.60);
+    --mac-label-3: rgba(235, 235, 245, 0.30);
+    --mac-label-4: rgba(235, 235, 245, 0.18);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  @apply antialiased;
+}
+
+/* ══════════════════════════════════════════════════════════
+   macOS Admin Typography System
+══════════════════════════════════════════════════════════ */
+.mac-admin {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Segoe UI", system-ui, Helvetica, Arial, sans-serif, "Apple Color Emoji";
+  letter-spacing: -0.015em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+/* SF Pro Typography Scale */
+.mac-title-1  { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+.mac-title-2  { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+.mac-title-3  { font-size: 20px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2; }
+.mac-headline { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; }
+.mac-body     { font-size: 15px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.5; }
+.mac-callout  { font-size: 13px; font-weight: 400; letter-spacing: -0.008em; line-height: 1.45; }
+.mac-caption  { font-size: 11px; font-weight: 400; color: var(--mac-gray-1); line-height: 1.4; }
+.mac-label-caps {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.065em; text-transform: uppercase;
+  color: var(--mac-gray-1);
+}
+
+/* ══════════════════════════════════════════════════════════
+   macOS Focus Ring
+══════════════════════════════════════════════════════════ */
+*:focus-visible {
+  outline: 3px solid rgba(0, 122, 255, 0.5) !important;
+  outline-offset: 1px !important;
+  border-radius: inherit;
+  transition: outline 0.08s ease;
+}
+
+/* ══════════════════════════════════════════════════════════
+   macOS Scrollbar — thin overlay style
+══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.18);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 9999px;
+  transition: background-color 0.2s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb       { background-color: rgba(255,255,255,0.18); }
+  ::-webkit-scrollbar-thumb:hover { background-color: rgba(255,255,255,0.35); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   Vibrancy / Glassmorphism utilities
+══════════════════════════════════════════════════════════ */
+.mac-vibrancy {
+  background-color: rgba(245, 245, 247, 0.85);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+}
+.mac-vibrancy-dark {
+  background-color: rgba(28, 28, 30, 0.85);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+/* ══════════════════════════════════════════════════════════
+   macOS Button Styles
+══════════════════════════════════════════════════════════ */
+.mac-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; letter-spacing: -0.008em;
+  border-radius: 7px; padding: 5px 14px; transition: all 75ms ease;
+  user-select: none; cursor: default; white-space: nowrap;
+  -webkit-user-select: none;
+}
+.mac-btn:active { transform: scale(0.97); }
+
+.mac-btn-primary {
+  background: var(--mac-blue); color: #fff;
+  box-shadow: 0 1px 2px rgba(0,122,255,0.3);
+}
+.mac-btn-primary:hover  { background: #0066DB; }
+.mac-btn-primary:active { background: #0051AF; box-shadow: none; }
+
+.mac-btn-secondary {
+  background: var(--mac-gray-5); color: #1c1c1e;
+}
+.mac-btn-secondary:hover  { background: var(--mac-gray-4); }
+.mac-btn-secondary:active { background: var(--mac-gray-3); }
+
+.mac-btn-destructive {
+  background: var(--mac-red); color: #fff;
+}
+.mac-btn-destructive:hover  { background: #E0352B; }
+.mac-btn-destructive:active { background: #C5302A; }
+
+.mac-btn-ghost {
+  background: transparent; color: var(--mac-blue);
+}
+.mac-btn-ghost:hover  { background: rgba(0,122,255,0.1); }
+.mac-btn-ghost:active { background: rgba(0,122,255,0.2); }
+
+.mac-btn-sm { padding: 3px 10px; font-size: 12px; border-radius: 6px; }
+.mac-btn-lg { padding: 8px 20px; font-size: 15px; border-radius: 10px; }
+
+/* ══════════════════════════════════════════════════════════
+   macOS Selection / Highlight
+══════════════════════════════════════════════════════════ */
+::selection {
+  background-color: rgba(0, 122, 255, 0.25);
+}
+
+
 
 @theme {
   --color-primary: #026E40;

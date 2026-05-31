@@ -83,25 +83,36 @@ export default function GaleriAdminPage() {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
+    <div className="w-full max-w-5xl mx-auto mac-admin">
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Galeri Foto</h1>
-          <p className="text-[14px] text-gray-500 font-medium mt-1">Kelola foto-foto yang tampil di grid galeri Landing Page.</p>
+          <h1 className="mac-title-2 text-gray-900">Galeri Foto</h1>
+          <p className="mac-callout text-[#8e8e93] mt-0.5">Kelola foto-foto yang tampil di grid galeri Landing Page.</p>
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-1.5 px-4 py-2 bg-[#007aff] text-white text-[14px] font-medium rounded-xl hover:bg-[#0056b3] transition-colors shadow-sm active:scale-95"
+          className="mac-btn mac-btn-primary flex items-center gap-1.5"
         >
-          <Plus size={18} /> Tambah Foto
+          <Plus size={15} /> Tambah Foto
         </button>
       </div>
 
       <InsetGroup>
         {loading ? (
-          <div className="p-10 text-center text-gray-500 font-medium">Memuat data...</div>
+          <div className="flex items-center justify-center py-16 gap-3 text-[#8e8e93]">
+            <div className="w-5 h-5 border-2 border-[#c7c7cc] border-t-[#007AFF] rounded-full animate-spin" />
+            <span className="mac-callout">Memuat data…</span>
+          </div>
         ) : data.length === 0 ? (
-          <div className="p-10 text-center text-gray-500 font-medium text-[14px]">Belum ada foto galeri. Silakan tambah baru.</div>
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 rounded-[1.25rem] bg-[#f5f5f7] border border-[#e5e5ea] flex items-center justify-center mb-4 text-[#c7c7cc]">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+            </div>
+            <p className="mac-headline text-[#3c3c43] mb-1">Belum Ada Foto Galeri</p>
+            <p className="mac-callout text-[#8e8e93] max-w-[220px] leading-relaxed">
+              Tekan "Tambah Foto" untuk menambahkan gambar pertama.
+            </p>
+          </div>
         ) : (
           <div className="flex flex-col">
             {data.map((item, index) => (
@@ -120,12 +131,12 @@ export default function GaleriAdminPage() {
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center justify-end gap-2 shrink-0">
-                    <button onClick={() => handleOpenModal(item)} className="p-2 text-[#007aff] hover:bg-blue-50 rounded-lg transition-colors active:scale-95">
-                      <Edit2 size={18} />
+                  <div className="flex items-center justify-end gap-1 shrink-0 mt-2 sm:mt-0">
+                    <button onClick={() => handleOpenModal(item)} className="mac-btn mac-btn-ghost mac-btn-sm flex items-center gap-1">
+                      <Edit2 size={13} /> Edit
                     </button>
-                    <button onClick={() => handleDelete(item.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors active:scale-95">
-                      <Trash2 size={18} />
+                    <button onClick={() => handleDelete(item.id)} className="mac-btn mac-btn-sm flex items-center gap-1 text-[#FF3B30] hover:bg-[#FF3B30]/10 active:bg-[#FF3B30]/20">
+                      <Trash2 size={13} /> Hapus
                     </button>
                   </div>
                 </div>
