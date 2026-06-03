@@ -19,9 +19,14 @@ export default function LoginPage() {
         setError(result.error);
         setIsLoading(false);
       }
-    } catch (err) {
+    } catch (err: any) {
       // doLogin throws redirect on success, which is normal in Next.js
+      // We must re-throw it so Next.js can actually redirect the user!
+      if (err?.message?.includes("NEXT_REDIRECT") || err?.digest?.startsWith("NEXT_REDIRECT")) {
+        throw err;
+      }
       setIsLoading(false);
+      setError("Terjadi kesalahan sistem. Silakan coba lagi.");
     }
   };
 
