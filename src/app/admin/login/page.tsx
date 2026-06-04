@@ -5,29 +5,23 @@ import { doLogin } from "@/actions/auth";
 
 export default function LoginPage() {
   const [error, setError] = React.useState("");
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isPending, startTransition] = React.useTransition();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleAction = (formData: FormData) => {
     setError("");
-
-    const formData = new FormData(e.currentTarget);
-    try {
-      const result = await doLogin(formData);
-      if (result?.error) {
-        setError(result.error);
-        setIsLoading(false);
+    startTransition(async () => {
+      try {
+        const result = await doLogin(formData);
+        if (result?.error) {
+          setError(result.error);
+        }
+      } catch (err: any) {
+        if (err?.message?.includes("NEXT_REDIRECT") || err?.digest?.startsWith("NEXT_REDIRECT")) {
+          throw err;
+        }
+        setError("Terjadi kesalahan sistem. Silakan coba lagi.");
       }
-    } catch (err: any) {
-      // doLogin throws redirect on success, which is normal in Next.js
-      // We must re-throw it so Next.js can actually redirect the user!
-      if (err?.message?.includes("NEXT_REDIRECT") || err?.digest?.startsWith("NEXT_REDIRECT")) {
-        throw err;
-      }
-      setIsLoading(false);
-      setError("Terjadi kesalahan sistem. Silakan coba lagi.");
-    }
+    });
   };
 
   return (
@@ -46,7 +40,7 @@ export default function LoginPage() {
           <p className="text-gray-500 text-sm mt-2">MTs Muhammadiyah 07 Purbalingga</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form action={handleAction} className="space-y-5">
           {error && (
             <div className="bg-red-500/10 backdrop-blur-md text-red-600 p-3 rounded-2xl text-sm text-center border border-red-500/10 font-medium">
               {error}
@@ -77,10 +71,10 @@ export default function LoginPage() {
           
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isPending}
             className="w-full mt-2 py-4 bg-gray-900 text-white rounded-2xl font-semibold hover:bg-black transition-all shadow-[0_4px_14px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.2)] hover:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100"
           >
-            {isLoading ? "Memeriksa..." : "Masuk ke Sistem"}
+            {isPending ? "Memeriksa..." : "Masuk ke Sistem"}
           </button>
         </form>
       </div>
