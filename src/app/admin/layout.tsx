@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   LayoutDashboard, FileText, Users, Settings, LogOut, Menu, X, 
   GraduationCap, Trophy, Calendar, ImageIcon, MessageSquareQuote, 
-  Handshake, HelpCircle, Search, Briefcase, Megaphone, FolderDown, Activity
+  Handshake, HelpCircle, Search, Briefcase, Megaphone, FolderDown, Activity, CheckCircle, BookOpen
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +23,9 @@ const MENU_GROUPS = [
   {
     label: "Akademik & Kesiswaan",
     items: [
+      { name: "Absensi Harian", href: "/admin/absensi", icon: CheckCircle, color: "bg-green-500", roles: ["SUPERADMIN", "ADMIN", "GURU"] },
+      { name: "Manajemen Kelas", href: "/admin/kelas", icon: BookOpen, color: "bg-blue-600", roles: ["SUPERADMIN", "ADMIN"] },
+      { name: "Direktori Siswa", href: "/admin/siswa", icon: Users, color: "bg-violet-500", roles: ["SUPERADMIN", "ADMIN", "GURU"] },
       { name: "Ekstrakurikuler", href: "/admin/ekskul", icon: Activity, color: "bg-rose-500", roles: ["SUPERADMIN", "ADMIN", "GURU"] },
       { name: "Direktori Guru", href: "/admin/guru", icon: Briefcase, color: "bg-amber-500", roles: ["SUPERADMIN", "ADMIN"] },
       { name: "Data PPDB", href: "/admin/ppdb", icon: Users, color: "bg-indigo-500", roles: ["SUPERADMIN", "ADMIN"] },

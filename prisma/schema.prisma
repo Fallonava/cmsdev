@@ -127,14 +127,16 @@ model GalleryPhoto {
 }
 
 model Teacher {
-  id        String   @id @default(uuid())
-  name      String
-  position  String
-  subjects  String?  @db.Text
-  photoUrl  String?
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String      @id @default(uuid())
+  name        String
+  position    String
+  subjects    String?     @db.Text
+  photoUrl    String?
+  order       Int         @default(0)
+  classrooms  Classroom[]
+  schedules   Schedule[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Announcement {
@@ -166,4 +168,70 @@ model Extracurricular {
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Classroom {
+  id                String      @id @default(uuid())
+  name              String      // e.g., "7A", "8B"
+  grade             Int         // e.g., 7, 8, 9
+  homeroomTeacherId String?     // Relasi ke Guru wali kelas
+  homeroomTeacher   Teacher?    @relation(fields: [homeroomTeacherId], references: [id])
+  students          Student[]
+  schedules         Schedule[]
+  attendances       Attendance[]
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+}
+
+model Student {
+  id          String      @id @default(uuid())
+  nisn        String      @unique
+  fullName    String
+  gender      String      // L / P
+  birthPlace  String
+  birthDate   DateTime
+  classroomId String?
+  classroom   Classroom?  @relation(fields: [classroomId], references: [id])
+  attendances Attendance[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Subject {
+  id          String      @id @default(uuid())
+  code        String      @unique // e.g., "MTK", "PAI"
+  name        String      // e.g., "Matematika", "Pendidikan Agama Islam"
+  schedules   Schedule[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Schedule {
+  id          String      @id @default(uuid())
+  dayOfWeek   Int         // 1 = Senin, 2 = Selasa, dst.
+  startTime   String      // e.g., "07:00"
+  endTime     String      // e.g., "08:30"
+  subjectId   String
+  subject     Subject     @relation(fields: [subjectId], references: [id])
+  classroomId String
+  classroom   Classroom   @relation(fields: [classroomId], references: [id])
+  teacherId   String
+  teacher     Teacher     @relation(fields: [teacherId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Attendance {
+  id          String      @id @default(uuid())
+  date        DateTime    // Tanggal absensi (hanya tanggal, jam diabaikan atau nol)
+  status      String      @default("HADIR") // HADIR, IZIN, SAKIT, ALPA
+  notes       String?     @db.Text
+  studentId   String
+  student     Student     @relation(fields: [studentId], references: [id])
+  classroomId String
+  classroom   Classroom   @relation(fields: [classroomId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([date, studentId]) // Seorang siswa hanya bisa punya 1 status per hari
 }
