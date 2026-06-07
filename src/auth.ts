@@ -8,6 +8,7 @@ import { prisma } from "@/lib/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
+  trustHost: true,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -56,11 +57,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     }
   },
-  pages: {
-    signIn: "/admin/login",
-  },
   session: {
     strategy: "jwt",
   },
-  secret: process.env.AUTH_SECRET || "super-secret-key-for-local-dev-only",
+  secret: process.env.AUTH_SECRET,
 });

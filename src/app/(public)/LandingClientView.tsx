@@ -133,16 +133,8 @@ function TestimonialCard({ t }: { t: any }) {
   );
 }
 
-function RecentBeritaList() {
-  const [posts, setPosts] = React.useState<any[]>([]);
-  const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    getPublishedBerita(3).then(data => { setPosts(data); setLoading(false); });
-  }, []);
-
-  if (loading) return <div className="text-center py-24 text-gray-400 font-bold text-lg animate-pulse">Memuat berita...</div>;
-  if (posts.length === 0) return (
+function RecentBeritaList({ posts }: { posts: any[] }) {
+  if (!posts || posts.length === 0) return (
     <div className="bg-white rounded-[3rem] p-16 text-center shadow-sm border border-gray-100">
       <p className="text-xl font-bold text-gray-400">Belum ada berita yang dipublikasikan.</p>
     </div>
@@ -184,7 +176,7 @@ function RecentBeritaList() {
 }
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────
-export default function LandingClientView({ dynamicData, settings, media }: any) {
+export default function LandingClientView({ dynamicData, settings, media, recentBerita }: any) {
 
   const activePrograms = dynamicData?.programs?.length ? dynamicData.programs : [];
   const activeAchievements = dynamicData?.achievements?.length ? dynamicData.achievements : [];
@@ -302,7 +294,7 @@ export default function LandingClientView({ dynamicData, settings, media }: any)
                   {isVideo(facilityUrl) ? (
                     <video src={facilityUrl} autoPlay loop muted playsInline className="w-full h-full object-cover" />
                   ) : (
-                    <Image src={facilityUrl} alt="Facility" fill sizes="(max-width: 768px) 100vw, 66vw" className="object-cover" />
+                    <Image src={facilityUrl} alt="Facility" fill sizes="(max-width: 768px) 100vw, 66vw" className="object-cover" priority />
                   )}
                 </div>
                 {/* Deep vignette */}
@@ -530,7 +522,7 @@ export default function LandingClientView({ dynamicData, settings, media }: any)
                   {isVideo(principalUrl) ? (
                     <video src={principalUrl} autoPlay loop muted playsInline className="w-full h-full object-cover" />
                   ) : (
-                    <Image src={principalUrl} alt="Kepala Sekolah" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                    <Image src={principalUrl} alt="Kepala Sekolah" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" priority />
                   )}
                 </div>
               </div>
@@ -615,7 +607,7 @@ export default function LandingClientView({ dynamicData, settings, media }: any)
                 Lihat Semua Berita <ChevronRight size={18} />
               </Link>
             </div>
-            <RecentBeritaList />
+            <RecentBeritaList posts={recentBerita || []} />
           </div>
         </section>
 

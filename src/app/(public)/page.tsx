@@ -4,6 +4,7 @@ import { getLandingData } from "@/actions/landing";
 import { draftMode } from "next/headers";
 import { cookies } from "next/headers";
 import { getDraft } from "@/lib/draftStore";
+import { getPublishedBerita } from "@/actions/berita";
 
 // Generate metadata for the landing page
 export async function generateMetadata() {
@@ -38,12 +39,14 @@ export default async function LandingPage() {
   }
 
   const dynamicData = await getLandingData();
+  const recentBerita = await getPublishedBerita(3);
 
   return (
     <LandingClientView 
       settings={settings} 
       media={media} 
       dynamicData={dynamicData} 
+      recentBerita={recentBerita}
     />
   );
 }
