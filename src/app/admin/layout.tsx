@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   LayoutDashboard, FileText, Users, Settings, LogOut, Menu, X, 
   GraduationCap, Trophy, Calendar, ImageIcon, MessageSquareQuote, 
-  Handshake, HelpCircle, Search, Briefcase, Megaphone, FolderDown, Activity, CheckCircle, BookOpen
+  Handshake, HelpCircle, Search, Briefcase, Megaphone, FolderDown, Activity, CheckCircle, BookOpen, Wallet, Banknote, Printer
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +23,9 @@ const MENU_GROUPS = [
   {
     label: "Akademik & Kesiswaan",
     items: [
-      { name: "Absensi Harian", href: "/admin/absensi", icon: CheckCircle, color: "bg-green-500", roles: ["SUPERADMIN", "ADMIN", "GURU"] },
+      { name: "Absensi Digital", href: "/admin/absensi", icon: Calendar, color: "bg-rose-500", roles: ["SUPERADMIN", "ADMIN", "GURU"] },
+      { name: "Input Nilai Akademik", href: "/admin/penilaian", icon: FileText, color: "bg-orange-500", roles: ["SUPERADMIN", "ADMIN", "GURU"] },
+      { name: "Cetak e-Rapor", href: "/admin/rapor", icon: Printer, color: "bg-blue-600", roles: ["SUPERADMIN", "ADMIN", "GURU"] },
       { name: "Manajemen Kelas", href: "/admin/kelas", icon: BookOpen, color: "bg-blue-600", roles: ["SUPERADMIN", "ADMIN"] },
       { name: "Direktori Siswa", href: "/admin/siswa", icon: Users, color: "bg-violet-500", roles: ["SUPERADMIN", "ADMIN", "GURU"] },
       { name: "Ekstrakurikuler", href: "/admin/ekskul", icon: Activity, color: "bg-rose-500", roles: ["SUPERADMIN", "ADMIN", "GURU"] },
@@ -32,6 +34,13 @@ const MENU_GROUPS = [
       { name: "Program Studi", href: "/admin/program", icon: GraduationCap, color: "bg-orange-500", roles: ["SUPERADMIN", "ADMIN"] },
       { name: "Prestasi Siswa", href: "/admin/prestasi", icon: Trophy, color: "bg-yellow-500", roles: ["SUPERADMIN", "ADMIN", "GURU"] },
       { name: "Kalender", href: "/admin/kalender", icon: Calendar, color: "bg-red-500", roles: ["SUPERADMIN", "ADMIN"] },
+    ]
+  },
+  {
+    label: "Keuangan & Pembayaran",
+    items: [
+      { name: "Dashboard Keuangan", href: "/admin/keuangan", icon: Wallet, color: "bg-emerald-500", roles: ["SUPERADMIN", "ADMIN"] },
+      { name: "Bayar SPP / Kasir", href: "/admin/keuangan/spp", icon: Banknote, color: "bg-teal-600", roles: ["SUPERADMIN", "ADMIN"] },
     ]
   },
   {

@@ -179,6 +179,7 @@ model Classroom {
   students          Student[]
   schedules         Schedule[]
   attendances       Attendance[]
+  grades            Grade[]
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
 }
@@ -193,6 +194,8 @@ model Student {
   classroomId String?
   classroom   Classroom?  @relation(fields: [classroomId], references: [id])
   attendances Attendance[]
+  payments    Payment[]
+  grades      Grade[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
@@ -202,6 +205,7 @@ model Subject {
   code        String      @unique // e.g., "MTK", "PAI"
   name        String      // e.g., "Matematika", "Pendidikan Agama Islam"
   schedules   Schedule[]
+  grades      Grade[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
@@ -234,4 +238,40 @@ model Attendance {
   updatedAt   DateTime    @updatedAt
 
   @@unique([date, studentId]) // Seorang siswa hanya bisa punya 1 status per hari
+}
+
+model Payment {
+  id            String    @id @default(uuid())
+  receiptNo     String    @unique
+  studentId     String
+  student       Student   @relation(fields: [studentId], references: [id])
+  paymentType   String    // e.g., "SPP", "Uang Gedung", "Seragam"
+  month         Int?      // 1-12 (only for SPP)
+  year          Int?      // e.g., 2026 (only for SPP)
+  amount        Float
+  status        String    @default("LUNAS") // LUNAS, PENDING
+  paymentMethod String    @default("TUNAI") // TUNAI, TRANSFER
+  paymentDate   DateTime  @default(now())
+  notes         String?   @db.Text
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Grade {
+  id              String    @id @default(uuid())
+  studentId       String
+  student         Student   @relation(fields: [studentId], references: [id])
+  subjectId       String
+  subject         Subject   @relation(fields: [subjectId], references: [id])
+  classroomId     String
+  classroom       Classroom @relation(fields: [classroomId], references: [id])
+  semester        Int       // 1 (Ganjil) / 2 (Genap)
+  academicYear    String    // e.g., "2026/2027"
+  knowledgeScore  Float?    // Nilai Pengetahuan (K-13) / Sumatif
+  skillScore      Float?    // Nilai Keterampilan (K-13) / Formatif
+  notes           String?   @db.Text // Deskripsi kemajuan
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([studentId, subjectId, semester, academicYear])
 }
