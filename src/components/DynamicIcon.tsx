@@ -1,27 +1,30 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { LucideProps } from "lucide-react";
-import dynamicIconImports from "lucide-react/dynamicIconImports";
-import { BookMarked, Trophy } from "lucide-react";
+import { LucideProps, icons } from "lucide-react";
 
 interface IconProps extends LucideProps {
   name: string;
 }
 
 export default function DynamicIcon({ name, ...props }: IconProps) {
-  const lowercaseName = name.toLowerCase();
-  
-  // Try to find a matching icon in dynamic imports
-  const iconKey = Object.keys(dynamicIconImports).find(key => key.toLowerCase() === lowercaseName) as keyof typeof dynamicIconImports;
+  // Find the exact name or try to format it
+  let IconComponent = (icons as any)[name];
 
-  if (iconKey) {
-    const LucideIcon = dynamic(dynamicIconImports[iconKey], {
-      loading: () => <div style={{ width: props.size || 24, height: props.size || 24 }} className="animate-pulse bg-gray-200 rounded-md" />,
-    });
-    return <LucideIcon {...props} />;
+  if (!IconComponent) {
+    // If the name is like "book-marked", try converting to PascalCase "BookMarked"
+    const pascalCaseName = name
+      .split("-")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+      .join("");
+    
+    IconComponent = (icons as any)[pascalCaseName];
   }
 
-  // Fallbacks if the name is invalid
-  return <BookMarked {...props} />;
+  if (IconComponent) {
+    return <IconComponent {...props} />;
+  }
+
+  // Fallback if the name is completely invalid
+  const FallbackIcon = icons.BookMarked;
+  return <FallbackIcon {...props} />;
 }
