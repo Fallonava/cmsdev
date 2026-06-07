@@ -5,6 +5,5 @@ const { auth } = NextAuth(authConfig);
 export { auth as proxy };
 
 export const config = {
-  // Matcher ignoring /api, /_next/static, /_next/image, and all files with an extension (e.g. .png, .css)
-  matcher: ["/((?!api|_next/static|_next/image|.*\\..*).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)"],
 };
